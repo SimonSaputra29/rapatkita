@@ -2,7 +2,7 @@
     <div class="container">
         <a class="navbar-brand fw-bold text-white"
             href="{{ Auth::check() ? (Auth::user()->role === 'admin' ? route('admin.index') : (Auth::user()->role === 'atasan' ? route('atasan.index') : route('pegawai.index'))) : url('/') }}">
-            Perpus Digital
+            Rapat Kita
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
