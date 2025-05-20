@@ -1,16 +1,98 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="d-flex justify-content-center align-items-center mb-4"
-        style="min-height: 100vh; background: linear-gradient(135deg, #ff9a9e, #fad0c4);">
-        <div class="card shadow-lg p-4" style="border-radius: 20px; max-width: 400px; width: 100%; background: #ffffff;">
-            <div class="text-center">
-                <h2 class="mb-3" style="font-weight: bold; color: #333;">Login</h2>
-                <p class="mb-4" style="color: #666;">Welcome back! Please login to your account.</p>
-            </div>
+    <!-- Animate.css CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-card {
+            width: 380px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            padding: 30px 25px;
+        }
+
+        .login-card h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #333;
+            letter-spacing: 1.5px;
+        }
+
+        .form-control:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+            color: #757575;
+            pointer-events: none;
+            font-size: 18px;
+        }
+
+        .input-icon input {
+            padding-left: 38px;
+        }
+
+        .btn-primary {
+            background-color: #2575fc;
+            border: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #6a11cb;
+        }
+
+        .form-check-label {
+            user-select: none;
+        }
+
+        .alert {
+            font-size: 14px;
+        }
+
+        .forgot-link {
+            color: #2575fc;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: #6a11cb;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container">
+        <div class="login-card animate__animated animate__fadeInDown">
+            <h3>Masuk ke Akun Anda</h3>
 
             @if (session('error'))
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" role="alert">
                     {{ session('error') }}
                 </div>
             @endif
@@ -18,56 +100,47 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <div class="mb-3">
-                    <label for="email" class="form-label" style="color: #555;">Email Address</label>
-                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}"
-                        style="border-radius: 30px; background: #f9f9f9;" placeholder="Enter your email" required>
+                <div class="mb-3 input-icon">
+                    <i class="bi bi-envelope-fill"></i>
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                        name="email" value="{{ old('email') }}" required autofocus placeholder="Email Anda">
                     @error('email')
-                        <small class="text-danger">{{ $message }}</small>
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label" style="color: #555;">Password</label>
-                    <input type="password" name="password" id="password" class="form-control"
-                        style="border-radius: 30px; background: #f9f9f9;" placeholder="Enter your password" required>
+                <div class="mb-3 input-icon">
+                    <i class="bi bi-lock-fill"></i>
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
+                        name="password" required placeholder="Password Anda">
                     @error('password')
-                        <small class="text-danger">{{ $message }}</small>
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
                     @enderror
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <input type="checkbox" id="remember-me" name="remember">
-                        <label for="remember-me" class="ms-1" style="color: #777;">Remember Me</label>
-                    </div>
-                    <a href="#" class="text-decoration-none" style="color: #ff6f61;">Forgot Password?</a>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="remember" name="remember"
+                        {{ old('remember') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="remember">Ingat saya</label>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100"
-                    style="border-radius: 30px; background: linear-gradient(135deg, #ff758c, #ff7eb3); border: none;">
-                    Login
-                </button>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Masuk
+                    </button>
+                </div>
+
+                <div class="mt-3 text-center">
+                    {{-- <a href="{{ route('password.request') }}" class="forgot-link">Lupa Password?</a> --}}
+                </div>
             </form>
-
-            <hr class="my-4">
-            <div class="text-center">
-                <p style="color: #777;">Or login with</p>
-                <div class="d-flex justify-content-center">
-                    <button class="btn btn-outline-secondary me-2" style="border-radius: 50px; width: 50px; height: 50px;">
-                        <i class="bi bi-facebook" style="font-size: 20px; color: #3b5998;"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary me-2" style="border-radius: 50px; width: 50px; height: 50px;">
-                        <i class="bi bi-google" style="font-size: 20px; color: #db4437;"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary" style="border-radius: 50px; width: 50px; height: 50px;">
-                        <i class="bi bi-twitter" style="font-size: 20px; color: #1da1f2;"></i>
-                    </button>
-                </div>
-            </div>
-
-            <p class="mt-4 text-center" style="color: #777;">Don't have an account? <a href="#"
-                    class="text-decoration-none" style="color: #ff6f61;">Sign Up</a></p>
         </div>
     </div>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 @endsection

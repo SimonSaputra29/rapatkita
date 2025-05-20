@@ -1,73 +1,119 @@
-<!DOCTYPE html>
-<html lang="id">
 <head>
     <meta charset="UTF-8">
     <title>Undangan Rapat</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
         body {
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 12px;
-            line-height: 1.6;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #333;
+            margin: 40px;
         }
+
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
         }
+
+        .header img {
+            max-height: 60px;
+            margin-bottom: 10px;
+        }
+
         .title {
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 700;
             text-decoration: underline;
+            color: #007bff;
+            margin-bottom: 5px;
         }
+
+        .number {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
         .status {
-            margin-top: 10px;
-            font-size: 13px;
-            font-weight: bold;
-            color: white;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
             display: inline-block;
-            padding: 5px 10px;
-            border-radius: 5px;
+            font-size: 14px;
+            margin-top: 5px;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
+
         .approved {
-            background-color: #28a745;
+            background: linear-gradient(45deg, #28a745, #218838);
         }
+
         .rejected {
-            background-color: #dc3545;
+            background: linear-gradient(45deg, #dc3545, #c82333);
         }
+
         .pending {
-            background-color: #ffc107;
+            background: linear-gradient(45deg, #ffc107, #e0a800);
             color: #212529;
         }
+
         .content {
-            margin-top: 30px;
+            margin-top: 40px;
         }
-        .content table {
+
+        .content p {
+            margin-bottom: 16px;
+        }
+
+        table {
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
+            border-collapse: collapse;
         }
-        .content td {
+
+        td {
+            padding: 8px 6px;
             vertical-align: top;
-            padding: 2px 5px;
         }
+
+        td:first-child {
+            font-weight: 600;
+            width: 120px;
+            color: #555;
+        }
+
         .footer {
-            margin-top: 50px;
+            margin-top: 80px;
             text-align: right;
+            font-style: italic;
+            color: #555;
         }
-        .footer p {
-            margin-bottom: 80px;
+
+        .footer strong {
+            font-weight: 700;
+            color: #222;
+            font-style: normal;
         }
     </style>
 </head>
+
 <body>
 
     <div class="header">
+        <!-- Logo kantor, sesuaikan path gambar -->
+        <img src="{{ asset('images/logo_kantor.png') }}" alt="Logo Kantor">
         <div class="title">UNDANGAN RAPAT</div>
-        <div>
-            Nomor: {{ $permission->id ?? '-' }}/RAPAT/{{ \Carbon\Carbon::parse($permission->created_at ?? now())->format('m/Y') }}
+        <div class="number">
+            Nomor:
+            {{ $permission->id ?? '-' }}/RAPAT/{{ \Carbon\Carbon::parse($permission->created_at ?? now())->format('m/Y') }}
         </div>
 
-        {{-- Tambahkan status di sini --}}
-        <div style="margin-top: 10px;">
-            @if($permission->status == 'approved')
+        <div>
+            @if ($permission->status == 'approved')
                 <span class="status approved">Disetujui</span>
             @elseif($permission->status == 'rejected')
                 <span class="status rejected">Ditolak</span>
@@ -80,11 +126,12 @@
     <div class="content">
         <p>Kepada Yth:</p>
         <p><strong>{{ $permission->approver->name ?? '-' }}</strong><br>
-        Email: {{ $permission->approver->email ?? '-' }}<br>
-        Di Tempat</p>
+            Email: {{ $permission->approver->email ?? '-' }}<br>
+            Di Tempat</p>
 
         <p>Dengan hormat,</p>
-        <p>Sehubungan dengan kegiatan koordinasi internal, kami mengundang Saudara/i untuk menghadiri rapat yang akan dilaksanakan pada:</p>
+        <p>Sehubungan dengan kegiatan koordinasi internal, kami mengundang Saudara/i untuk menghadiri rapat yang akan
+            dilaksanakan pada:</p>
 
         <table>
             <tr>
@@ -109,8 +156,8 @@
             </tr>
         </table>
 
-        @if(!empty($permission->note))
-        <p>Catatan:<br>{{ $permission->note }}</p>
+        @if (!empty($permission->note))
+            <p>Catatan:<br>{{ $permission->note }}</p>
         @endif
 
         <p>Demikian undangan ini kami sampaikan. Atas perhatian dan kehadirannya, kami ucapkan terima kasih.</p>
@@ -122,4 +169,3 @@
     </div>
 
 </body>
-</html>
