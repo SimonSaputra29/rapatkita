@@ -49,7 +49,7 @@ class PermissionController extends Controller
 
 
 
-        return redirect()->route('permissions.index')->with('success', 'Izin berhasil diajukan.');
+        return redirect()->route('pegawai.permissions.index')->with('success', 'Izin berhasil diajukan.');
     }
 
 
@@ -85,6 +85,18 @@ class PermissionController extends Controller
         return $pdf->download('undangan_rapat_' . $permission->id . '.pdf');
     }
 
+    public function exportPdfAdmin(Permission $permission)
+    {
+        // Pastikan relasi 'user' dan 'approver' dimuat
+        $permission->load(['user', 'approver']);
+
+        // Generate PDF
+        $pdf = Pdf::loadView('admin.exportpermissions-pdf', compact('permission'));
+
+        return $pdf->download('undangan_rapat_' . $permission->id . '.pdf');
+    }
+
+
 
 
 
@@ -98,4 +110,37 @@ class PermissionController extends Controller
 
         return view('atasan.permissionsatasan', compact('permissions'));
     }
+
+    public function indexAdmin(Request $request)
+    {
+        $query = Permission::with(['user', 'approver'])->latest();
+
+        // Cek apakah ada filter status di request
+        if ($request->has('status') && in_array($request->status, ['pending', 'approved', 'rejected'])) {
+            $query->where('status', $request->status);
+        }
+
+        $permissions = $query->paginate(10)->withQueryString();
+
+        return view('admin.permissionadmin', compact('permissions'));
+    }
+
+    public function showAdmin($id)
+    {
+        $permission = Permission::with(['user', 'approver'])->findOrFail($id);
+
+        return view('admin.show', compact('permission'));
+    }
+
+    public function destroyAdmin($id)
+{
+    $permission = Permission::findOrFail($id);
+
+    // Opsional: kamu bisa cek hak akses admin di sini jika perlu
+
+    $permission->delete();
+
+    return redirect()->route('admin.permissions.index')->with('success', 'Undangan berhasil dihapus.');
+}
+
 }

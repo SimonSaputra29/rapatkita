@@ -32,17 +32,20 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Admin
 Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-    Route::resource('meetings', MeetingController::class);
-    Route::get('meetings/{meeting}/pdf', [MeetingController::class, 'downloadPdf'])->name('meetings.pdf');
+    Route::get('/permissionsadmin', [PermissionController::class, 'indexAdmin'])->name('admin.permissions.index');
+    Route::get('/permissions/{id}', [PermissionController::class, 'showAdmin'])->name('admin.permissions.show');
+    Route::delete('/permissions/{id}', [PermissionController::class, 'destroyAdmin'])->name('admin.permissions.destroy');
+    Route::get('/permissions/{permission}/export', [PermissionController::class, 'exportPdfAdmin'])->name('admin.permissions.export');
+    // Route::resource('meetings', MeetingController::class);
+    // Route::get('meetings/{meeting}/pdf', [MeetingController::class, 'downloadPdf'])->name('meetings.pdf');
 });
 
 // Pegawai
-Route::middleware('auth', 'role:admin,pegawai')->group(function () {
+Route::middleware('auth', 'role:pegawai')->group(function () {
     Route::resource('/pegawai', PegawaiController::class);
-    Route::resource('/permissions', PermissionController::class);
-    // Route::get('/exportpermissions-pdf', [PermissionController::class, 'exportPdf'])->name('permissions.export');
+    Route::get('/permissionpegawai', [PermissionController::class, 'index'])->name('pegawai.permissions.index');
+    Route::post('/pegawaipermissionsstore', [PermissionController::class, 'store'])->name('pegawai.permissions.store');
     Route::get('/exportpermissions-pdf/{permission}', [PermissionController::class, 'exportPdf'])->name('permissions.export');
-    // Route::get('/databukupdf', [BukuController::class,'eksporpdf'])->name('databukupdf');
 });
 
 // Atasan

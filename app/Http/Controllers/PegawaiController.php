@@ -8,8 +8,11 @@ class PegawaiController extends Controller
 {
     public function index()
     {
-        return view('pegawai.index', [
-            'title' =>  'Halaman Pegawai'
-        ]);
+        return view('pegawai.index');
+    }
+
+    public function create()
+    {
+        return view('pegawai.createpermissions');
     }
 }

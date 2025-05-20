@@ -7,7 +7,7 @@
     <div class="container py-4 animate__animated animate__fadeIn">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-primary"><i class="bi bi-envelope-paper-fill me-2"></i>Daftar Surat Undangan</h2>
-            <a href="{{ route('permissions.create') }}" class="btn btn-primary shadow-sm">
+            <a href="{{ route('pegawai.create') }}" class="btn btn-primary shadow-sm">
                 <i class="bi bi-plus-circle me-1"></i> Ajukan Undangan Baru
             </a>
         </div>
@@ -22,7 +22,7 @@
                         <th>Tempat</th>
                         <th>Topik</th>
                         <th>Partisipasi</th>
-                        <th>File</th>
+                        {{-- <th>File</th> --}}
                         <th>Catatan</th>
                         <th>Status</th>
                         <th>Disetujui Oleh</th>
@@ -38,7 +38,7 @@
                             <td>{{ $permission->location }}</td>
                             <td>{{ $permission->topic }}</td>
                             <td>{{ $permission->participants }}</td>
-                            <td>
+                            {{-- <td>
                                 @if ($permission->attachment)
                                     <a href="{{ asset('storage/' . $permission->attachment) }}" target="_blank"
                                         class="btn btn-sm btn-outline-info">
@@ -47,7 +47,7 @@
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
-                            </td>
+                            </td> --}}
                             <td>{{ $permission->note }}</td>
                             <td>
                                 @if ($permission->status == 'approved')
