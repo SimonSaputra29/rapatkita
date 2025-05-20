@@ -49,7 +49,7 @@ class PermissionController extends Controller
 
 
 
-        return redirect()->route('permissions.index')->with('success', 'Izin berhasil diajukan.');
+        return redirect()->route('pegawai.permissions.index')->with('success', 'Izin berhasil diajukan.');
     }
 
 
@@ -85,7 +85,6 @@ class PermissionController extends Controller
         return $pdf->download('undangan_rapat_' . $permission->id . '.pdf');
     }
 
-<<<<<<< HEAD
     public function exportPdfAdmin(Permission $permission)
     {
         // Pastikan relasi 'user' dan 'approver' dimuat
@@ -97,8 +96,7 @@ class PermissionController extends Controller
         return $pdf->download('undangan_rapat_' . $permission->id . '.pdf');
     }
 
-=======
->>>>>>> 438602ee89af6e1ce30a85617231092f54394442
+
 
 
 
