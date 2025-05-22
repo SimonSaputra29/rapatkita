@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="container mt-4 animate__animated animate__fadeIn">
-        <div class="card shadow-sm animate__animated animate__fadeInUp animate__delay-1s">
+        <div class="card shadow-sm animate__animated animate__fadeInUp animate__delay-1s mb-4">
             <div class="card-header bg-primary text-white animate__animated animate__fadeInDown">
                 <h4 class="mb-0"><i class="bi bi-envelope-paper"></i> Buat Undangan Rapat Kantor</h4>
             </div>
@@ -21,36 +21,37 @@
                     <div class="row mb-3 animate__animated animate__fadeInLeft animate__delay-1s">
                         <div class="col-md-6">
                             <label for="date" class="form-label">📅 Tanggal Rapat</label>
-                            <input type="date" name="date" id="date" class="form-control" required>
+                            <input type="date" name="date" id="date" class="form-control" required
+                                min="{{ date('Y-m-d') }}">
                         </div>
                         <div class="col-md-6">
                             <label for="time" class="form-label">⏰ Waktu Rapat</label>
-                            <input type="time" name="time" id="time" class="form-control" required>
+                            <input type="time" name="time" id="time" class="form-control" required min="09:00"
+                                max="18:00">
                         </div>
                     </div>
 
                     <div class="mb-3 animate__animated animate__fadeInLeft animate__delay-2s">
                         <label for="location" class="form-label">📍 Tempat Rapat</label>
                         <input type="text" name="location" id="location" class="form-control"
-                            placeholder="Contoh: Ruang Rapat Lantai 2" required>
+                            placeholder="Contoh: Ruang RPS 2" required>
                     </div>
 
                     <div class="mb-3 animate__animated animate__fadeInLeft animate__delay-2s">
                         <label for="topic" class="form-label">📝 Topik Rapat</label>
                         <textarea name="topic" id="topic" class="form-control" rows="3" required
-                            placeholder="Contoh: Evaluasi Kinerja Bulanan"></textarea>
+                            placeholder="Contoh: Bootcamp Rekayasa Perangkat Lunak"></textarea>
                     </div>
 
                     <div class="mb-3 animate__animated animate__fadeInLeft animate__delay-2s">
                         <label for="participants" class="form-label">👥 Peserta Rapat</label>
                         <textarea name="participants" id="participants" class="form-control" rows="3" required
-                            placeholder="Contoh: Seluruh Tim Marketing, Manajer HR, dll"></textarea>
+                            placeholder="Contoh: Seluruh Guru, Siswa, dll"></textarea>
                     </div>
 
                     <div class="mb-3 animate__animated animate__fadeInLeft animate__delay-2s">
                         <label for="note" class="form-label">🗒️ Catatan (opsional)</label>
-                        <textarea name="note" id="note" class="form-control" rows="2"
-                            placeholder="Catatan tambahan jika ada..."></textarea>
+                        <textarea name="note" id="note" class="form-control" rows="2" placeholder="Catatan tambahan jika ada..."></textarea>
                     </div>
 
                     <div class="d-flex justify-content-between animate__animated animate__fadeInUp animate__delay-3s">
