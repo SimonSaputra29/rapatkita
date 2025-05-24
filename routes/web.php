@@ -7,6 +7,7 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RapatController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,10 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('/permissions/{permission}/export', [PermissionController::class, 'exportPdfAdmin'])->name('admin.permissions.export');
     // Route::resource('meetings', MeetingController::class);
     // Route::get('meetings/{meeting}/pdf', [MeetingController::class, 'downloadPdf'])->name('meetings.pdf');
+    Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', UserController::class);
+});
+
 });
 
 // Pegawai

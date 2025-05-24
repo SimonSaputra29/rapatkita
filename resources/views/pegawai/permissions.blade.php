@@ -4,7 +4,7 @@
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 @endpush
 
 @section('content')
@@ -34,7 +34,7 @@
                         <th>Partisipasi</th>
                         <th>Catatan</th>
                         <th>Status</th>
-                        <th>Disetujui Oleh</th>
+                        <th>Dikekola Oleh</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -68,7 +68,8 @@
                             <td>
                                 <a href="{{ route('permissions.export', $permission->id) }}"
                                     class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Unduh Surat">
+                                    data-bs-placement="top" title="Unduh Surat"
+                                    aria-label="Unduh Surat Undangan {{ $permission->topic }}">
                                     <i class="bi bi-download"></i>
                                 </a>
                             </td>
@@ -94,14 +95,14 @@
         const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         tooltips.forEach(t => new bootstrap.Tooltip(t));
 
-        // Lottie animation
+        // Lottie animation only if empty
         @if ($permissions->isEmpty())
             lottie.loadAnimation({
                 container: document.getElementById('lottie-empty'),
                 renderer: 'svg',
                 loop: true,
                 autoplay: true,
-                path: 'https://assets3.lottiefiles.com/packages/lf20_HXrZfZ.json' // animasi inbox kosong
+                path: 'https://assets3.lottiefiles.com/packages/lf20_HXrZfZ.json'
             });
         @endif
     </script>

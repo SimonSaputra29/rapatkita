@@ -74,102 +74,138 @@
     </div>
 @endsection
 
-@section('styles')
-    <style>
-        .animated-fadein {
-            animation: fadeIn 1.1s cubic-bezier(.42, 0, .58, 1);
+<style>
+    .animated-fadein {
+        animation: fadeIn 1.1s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(25px);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-            }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+    .detail-card-anim {
+        animation: popUp 0.6s ease-out;
+        transition: transform 0.3s;
+    }
+
+    .detail-card-anim:hover {
+        transform: scale(1.01);
+    }
+
+    @keyframes popUp {
+        0% {
+            opacity: 0;
+            transform: scale(0.97) translateY(30px);
         }
 
-        .detail-card-anim {
-            animation: cardPop 0.7s cubic-bezier(.5, 1.7, .89, .99);
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .badge-anim {
+        animation: badgeGlow 1.5s ease-in-out infinite alternate;
+        transition: transform 0.2s;
+    }
+
+    @keyframes badgeGlow {
+        from {
+            box-shadow: 0 0 8px rgba(22, 255, 178, 0.4);
         }
 
-        @keyframes cardPop {
-            from {
-                opacity: 0;
-                transform: scale(.97) translateY(30px);
-            }
+        to {
+            box-shadow: 0 0 14px rgba(22, 255, 178, 0.9);
+        }
+    }
 
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+    .badge-anim:hover {
+        transform: scale(1.08) rotate(-1deg);
+    }
+
+    .btn-back-anim {
+        transition: all 0.3s ease;
+    }
+
+    .btn-back-anim:hover {
+        background: linear-gradient(90deg, #1cb5e0, #97a0ee);
+        color: #fff;
+        transform: scale(1.05) translateX(-4px);
+    }
+
+    .text-gradient {
+        background: linear-gradient(90deg, #1cb5e0, #000851);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        transition: background-color 0.3s;
+    }
+
+    .table tr:hover td {
+        background-color: #f8f9fa;
+    }
+
+    .table-borderless td,
+    .table-borderless th {
+        border: none;
+    }
+
+    @media (max-width: 767px) {
+        .card-body .row>div {
+            margin-bottom: 2rem;
         }
 
-        .badge-anim {
-            transition: transform .18s, box-shadow .20s;
-            cursor: pointer;
-        }
-
-        .badge-anim:hover {
-            transform: scale(1.09) rotate(-2deg);
-            box-shadow: 0 3px 14px #16ffb2a1;
-        }
-
-        .btn-back-anim {
-            transition: background 0.24s, color 0.18s, transform 0.18s;
-        }
-
-        .btn-back-anim:hover,
-        .btn-back-anim:focus {
-            background: linear-gradient(90deg, #1cb5e0 0%, #000851 100%);
-            color: #fff;
-            transform: scale(1.04) translateX(-3px);
-        }
-
-        .text-gradient {
-            background: linear-gradient(90deg, #1cb5e0 0%, #000851 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .table td {
+            display: block;
+            text-align: left;
+            padding-left: 0;
         }
 
         .table th {
-            font-weight: 600;
-            vertical-align: middle;
+            display: block;
+            text-align: left;
+            padding-left: 0;
+            margin-bottom: 0.25rem;
+            color: #6c757d;
         }
+    }
+</style>
 
-        .table td,
-        .table th {
-            padding: 0.75rem 0.75rem;
-            transition: background .2s;
-        }
 
-        .table-borderless td,
-        .table-borderless th {
-            border: none !important;
-        }
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const rows = document.querySelectorAll('.table tr');
+        rows.forEach((row, i) => {
+            row.style.opacity = 0;
+            row.style.transform = 'translateY(10px)';
+            row.style.transition = `opacity 0.6s ease ${i * 0.08}s, transform 0.6s ease ${i * 0.08}s`;
+            setTimeout(() => {
+                row.style.opacity = 1;
+                row.style.transform = 'translateY(0)';
+            }, 200);
+        });
 
-        @media (max-width: 767px) {
-            .card-body .row>div {
-                margin-bottom: 2rem;
-            }
-        }
-    </style>
-@endsection
-
-@section('scripts')
-    <script>
-        // Animasi badge jika di klik (pulse)
         document.querySelectorAll('.badge-anim').forEach(function(badge) {
             badge.addEventListener('click', function() {
-                badge.style.animation = "badgePulse .5s";
+                badge.style.animation = "badgePulse 0.5s";
                 setTimeout(() => {
-                    badge.style.animation = "";
+                    badge.style.animation =
+                        "badgeGlow 1.5s ease-in-out infinite alternate";
                 }, 500);
             });
         });
-    </script>
-@endsection
+    });
+</script>

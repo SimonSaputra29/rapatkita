@@ -99,7 +99,7 @@
                         <th>Tanggal</th>
                         <th>Topik</th>
                         <th>Status</th>
-                        <th>Disetujui Oleh</th>
+                        <th>Disetujui / Ditolak Oleh</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>

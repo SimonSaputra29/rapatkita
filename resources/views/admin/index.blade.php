@@ -22,10 +22,21 @@
                     </div>
                 </a>
             </div>
+
+            <div class="col-md-4 mb-4 animate__animated animate__zoomIn animate__delay-1s">
+                <a href="{{ route('admin.users.index') }}" class="text-decoration-none">
+                    <div class="card shadow-lg border-0 hover-shadow text-center p-4 h-100">
+                        <div class="card-body">
+                            <i class="bi bi-people-fill display-4 text-success mb-3"></i>
+                            <h5 class="card-title fw-bold">Manajemen Pengguna</h5>
+                            <p class="card-text text-muted">Kelola semua pengguna dan hak akses.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 
     <!-- Bootstrap Icons (jika belum include) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 @endsection
-

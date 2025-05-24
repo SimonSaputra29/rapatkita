@@ -1,146 +1,113 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="id">
 
-@section('content')
-    <!-- Animate.css CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Rapat Kita</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #e0f7fa, #ffffff);
+            background-size: cover;
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
         }
 
-        .login-card {
-            width: 380px;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-            padding: 30px 25px;
+        .login-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.15);
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            overflow: hidden;
         }
 
-        .login-card h3 {
-            text-align: center;
-            margin-bottom: 25px;
-            font-weight: 700;
-            color: #333;
-            letter-spacing: 1.5px;
+        .login-image {
+            background-image: url('https://img.freepik.com/free-vector/colleagues-working-project-together_52683-28612.jpg?w=740&t=st=1716464403~exp=1716465003~hmac=c6a3c9b5e8c218186d6542444c888b51e4f1b0df302fe7ed3f1b22f2ec25b878');
+            background-size: cover;
+            background-position: center;
+            width: 50%;
+        }
+
+        .login-form {
+            padding: 40px;
+            width: 50%;
+        }
+
+        .login-form h2 {
+            font-weight: bold;
+            color: #0077b6;
         }
 
         .form-control:focus {
-            border-color: #2575fc;
-            box-shadow: 0 0 8px rgba(37, 117, 252, 0.6);
-            transition: all 0.3s ease;
-        }
-
-        .input-icon {
-            position: relative;
-        }
-
-        .input-icon i {
-            position: absolute;
-            top: 50%;
-            left: 12px;
-            transform: translateY(-50%);
-            color: #757575;
-            pointer-events: none;
-            font-size: 18px;
-        }
-
-        .input-icon input {
-            padding-left: 38px;
+            box-shadow: none;
+            border-color: #0077b6;
         }
 
         .btn-primary {
-            background-color: #2575fc;
+            background-color: #0077b6;
             border: none;
-            font-weight: 600;
-            letter-spacing: 1px;
-            transition: background-color 0.3s ease;
         }
 
         .btn-primary:hover {
-            background-color: #6a11cb;
+            background-color: #005f87;
         }
 
-        .form-check-label {
-            user-select: none;
-        }
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                height: auto;
+            }
 
-        .alert {
-            font-size: 14px;
-        }
+            .login-image {
+                width: 100%;
+                height: 200px;
+            }
 
-        .forgot-link {
-            color: #2575fc;
-            font-weight: 500;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .forgot-link:hover {
-            color: #6a11cb;
-            text-decoration: underline;
+            .login-form {
+                width: 100%;
+            }
         }
     </style>
+</head>
 
-    <div class="container">
-        <div class="login-card animate__animated animate__fadeInDown">
-            <h3>Masuk ke Akun Anda</h3>
-
-            @if (session('error'))
-                <div class="alert alert-danger" role="alert">
-                    {{ session('error') }}
-                </div>
-            @endif
+<body>
+    <div class="login-container animate__animated animate__fadeInDown">
+        <div class="login-image d-none d-md-block"></div>
+        <div class="login-form">
+            <h2 class="mb-4">Selamat Datang di <span style="color:#023e8a;">Rapat Kita</span></h2>
+            <p class="text-muted mb-4">Silakan login untuk mulai mengelola undangan dan notulensi rapat Anda.</p>
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-
-                <div class="mb-3 input-icon">
-                    <i class="bi bi-envelope-fill"></i>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                        name="email" value="{{ old('email') }}" required autofocus placeholder="Email Anda">
-                    @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                <div class="mb-3">
+                    <label for="email" class="form-label">Alamat Email</label>
+                    <input type="email" name="email" id="email" class="form-control"
+                        placeholder="you@example.com" required>
                 </div>
 
-                <div class="mb-3 input-icon">
-                    <i class="bi bi-lock-fill"></i>
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                        name="password" required placeholder="Password Anda">
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                <div class="mb-3">
+                    <label for="password" class="form-label">Kata Sandi</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="••••••••"
+                        required>
                 </div>
 
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember"
-                        {{ old('remember') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="remember">Ingat saya</label>
-                </div>
-
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        Masuk
-                    </button>
-                </div>
+                <button type="submit" class="btn btn-primary w-100">🔐 Masuk</button>
 
                 <div class="mt-3 text-center">
-                    {{-- <a href="{{ route('password.request') }}" class="forgot-link">Lupa Password?</a> --}}
+                    {{-- <small class="text-muted">Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a></small> --}}
                 </div>
             </form>
         </div>
     </div>
+</body>
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-@endsection
+</html>

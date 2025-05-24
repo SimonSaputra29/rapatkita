@@ -6,10 +6,12 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
     <style>
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
         }
     </style>
 @endpush
@@ -23,12 +25,12 @@
 
         <div class="row justify-content-center">
             <div class="col-md-4 mb-4 animate__animated animate__zoomIn">
-                <a href="{{ route('pegawai.permissions.index') }}" class="text-decoration-none text-dark">
+                <a href="{{ route('pegawai.permissions.index') }}" class="text-decoration-none text-dark d-block h-100">
                     <div class="card border-0 shadow-lg text-center p-4 h-100">
                         <div class="card-body">
                             <i class="bi bi-envelope-paper-fill display-4 text-info mb-3"></i>
                             <h5 class="fw-bold">Pengajuan Rapat</h5>
-                            <p class="text-muted">Ajukan undangan rapat baru dengan mudah dan cepat.</p>
+                            <p class="text-muted mb-3">Ajukan undangan rapat baru dengan mudah dan cepat.</p>
                         </div>
                     </div>
                 </a>
