@@ -7,7 +7,7 @@
     <title>Login - Rapat Kita</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
-    
+
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -94,12 +94,14 @@
                 @csrf
                 <div class="mb-3">
                     <label for="email" class="form-label">Alamat Email</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="you@example.com" required />
+                    <input type="email" name="email" id="email" class="form-control"
+                        placeholder="you@example.com" required />
                 </div>
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Kata Sandi</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required />
+                    <input type="password" name="password" id="password" class="form-control" placeholder="••••••••"
+                        required />
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">🔐 Masuk</button>
@@ -108,26 +110,26 @@
     </div>
 
     {{-- SweetAlert2 Flash Messages --}}
-    @if(session('success'))
-    <script>
-        Swal.fire({
-            title: 'Berhasil!',
-            text: '{{ session('success') }}',
-            icon: 'success',
-            confirmButtonColor: '#0077b6'
-        });
-    </script>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonColor: '#0077b6'
+            });
+        </script>
     @endif
 
-    @if(session('error'))
-    <script>
-        Swal.fire({
-            title: 'Gagal!',
-            text: '{{ session('error') }}',
-            icon: 'error',
-            confirmButtonColor: '#d33'
-        });
-    </script>
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonColor: '#d33'
+            });
+        </script>
     @endif
 </body>
 
