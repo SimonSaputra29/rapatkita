@@ -30,26 +30,31 @@ class PermissionController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'date' => 'required|date',
+        $validated = $request->validate([
+            'date' => 'required|date|after_or_equal:today',
             'time' => 'required',
-            'location' => 'required|string',
-            'topic' => 'nullable|string',
-            'participants' => 'nullable|string',
+            'location' => 'required|string|max:255',
+            'topic' => 'required|string',
+            'participants' => 'required|string',
             'note' => 'nullable|string',
-            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx',
         ]);
 
-        $data = $request->all();
-        $data['creator_id'] = Auth::id();
-        if ($request->hasFile('attachment')) {
-            $data['attachment'] = $request->file('attachment')->store('attachments');
-        }
-        Permission::create($data);
+        $status = $request->action === 'draft' ? 'draft' : 'pending';
 
+        $permission = Permission::create([
+            'creator_id' => auth()->id(),
+            'date' => $validated['date'],
+            'time' => $validated['time'],
+            'location' => $validated['location'],
+            'topic' => $validated['topic'],
+            'participants' => $validated['participants'],
+            'note' => $validated['note'] ?? null,
+            'status' => $status,
+        ]);
 
+        $message = $status === 'draft' ? 'Undangan disimpan sebagai arsip.' : 'Undangan berhasil diajukan.';
 
-        return redirect()->route('pegawai.permissions.index')->with('success', 'Izin berhasil diajukan.');
+        return redirect()->route('pegawai.permissions.index')->with('success', $message);
     }
 
 
@@ -96,10 +101,16 @@ class PermissionController extends Controller
         return $pdf->download('undangan_rapat_' . $permission->id . '.pdf');
     }
 
+    public function download(Permission $permission)
+    {
+        if ($permission->status !== 'draft') {
+            return redirect()->back()->with('error', 'Hanya undangan berstatus arsip yang bisa diunduh.');
+        }
 
+        $pdf = Pdf::loadView('pegawai.arsip', compact('permission'));
 
-
-
+        return $pdf->download('undangan-rapat-' . $permission->id . '.pdf');
+    }
 
     // Menampilkan daftar izin untuk atasan
     public function indexAtasan()
@@ -133,14 +144,13 @@ class PermissionController extends Controller
     }
 
     public function destroyAdmin($id)
-{
-    $permission = Permission::findOrFail($id);
+    {
+        $permission = Permission::findOrFail($id);
 
-    // Opsional: kamu bisa cek hak akses admin di sini jika perlu
+        // Opsional: kamu bisa cek hak akses admin di sini jika perlu
 
-    $permission->delete();
+        $permission->delete();
 
-    return redirect()->route('admin.permissions.index')->with('success', 'Undangan berhasil dihapus.');
-}
-
+        return redirect()->route('admin.permissions.index')->with('success', 'Undangan berhasil dihapus.');
+    }
 }

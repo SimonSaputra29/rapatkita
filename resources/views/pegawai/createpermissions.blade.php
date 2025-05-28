@@ -83,14 +83,22 @@
                         @enderror
                     </div>
 
-                    <div class="d-flex justify-content-between animate__animated animate__fadeInUp animate__delay-3s">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-4">
                         <a href="{{ route('pegawai.permissions.index') }}" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left-circle"></i> Kembali
+                            <i class="bi bi-arrow-left-circle me-1"></i> Kembali
                         </a>
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-send-check"></i> Kirim Undangan
-                        </button>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit" name="action" value="draft" class="btn btn-secondary">
+                                <i class="bi bi-file-earmark-arrow-down me-1"></i> Simpan sebagai Arsip
+                            </button>
+
+                            <button type="submit" name="action" value="submit" class="btn btn-success">
+                                <i class="bi bi-send-check me-1"></i> Ajukan Surat
+                            </button>
+                        </div>
                     </div>
+
                 </form>
             </div>
         </div>

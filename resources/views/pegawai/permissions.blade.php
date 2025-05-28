@@ -17,7 +17,7 @@
         </div>
 
         <div class="d-flex justify-content-end mb-3 animate__animated animate__fadeInRight">
-            <a href="{{ route('pegawai.create') }}" class="btn btn-success shadow-sm">
+            <a href="{{ route('pegawai.create') }}" class="btn btn-primary shadow-sm">
                 <i class="bi bi-plus-circle me-1"></i> Ajukan Undangan Baru
             </a>
         </div>
@@ -34,7 +34,7 @@
                         <th>Partisipasi</th>
                         <th>Catatan</th>
                         <th>Status</th>
-                        <th>Dikekola Oleh</th>
+                        {{-- <th>Dikekola Oleh</th> --}}
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -58,21 +58,43 @@
                                     <span class="badge bg-danger">
                                         <i class="bi bi-x-circle me-1"></i>Ditolak
                                     </span>
+                                @elseif ($permission->status === 'draft')
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-file-earmark-text me-1"></i>Draft
+                                    </span>
                                 @else
                                     <span class="badge bg-warning text-dark">
                                         <i class="bi bi-hourglass-split me-1"></i>Menunggu
                                     </span>
                                 @endif
                             </td>
-                            <td>{{ $permission->approver->name ?? '-' }}</td>
-                            <td>
-                                <a href="{{ route('permissions.export', $permission->id) }}"
-                                    class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Unduh Surat"
-                                    aria-label="Unduh Surat Undangan {{ $permission->topic }}">
-                                    <i class="bi bi-download"></i>
-                                </a>
+
+                            <td class="">
+                                {{-- d-flex justify-content-center gap-1 flex-wrap --}}
+                                {{-- Tombol Unduh Surat --}}
+                                @if ($permission->status === 'approved')
+                                    <a href="{{ route('permissions.export', $permission->id) }}"
+                                        class="btn btn-sm btn-success" data-bs-toggle="tooltip"
+                                        title="Unduh Surat: {{ $permission->topic }}">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                    {{-- Tombol Unduh Arsip Draft (jika status draft) --}}
+                                @elseif ($permission->status === 'draft')
+                                    <a href="{{ route('pegawai.permissions.download', $permission) }}"
+                                        class="btn btn-sm btn-secondary" data-bs-toggle="tooltip"
+                                        title="Unduh Arsip Draft: {{ $permission->topic }}">
+                                        <i class="bi bi-file-earmark-arrow-down"></i>
+                                    </a>
+                                @elseif ($permission->status === 'pending' || $permission->status === 'rejected')
+                                    <button class="btn btn-sm btn-outline-secondary" disabled data-bs-toggle="tooltip"
+                                        title="Surat belum dapat diunduh karena status masih '{{ $permission->status }}'">
+                                        <i class="bi bi-download"></i>
+                                    </button>
+                                @endif
+
                             </td>
+
+
                         </tr>
                     @empty
                         <tr>

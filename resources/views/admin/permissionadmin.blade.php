@@ -105,6 +105,8 @@
                 </thead>
                 <tbody>
                     @forelse($permissions as $permission)
+                        @continue($permission->status === 'draft') {{-- Lewati jika status draft --}}
+
                         <tr class="animate__animated animate__fadeIn animate__faster">
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td>{{ $permission->user->name }}</td>
@@ -120,11 +122,12 @@
                                         <span class="badge bg-danger px-3 py-2">Ditolak</span>
                                     @break
 
-                                    @default
+                                    @case('pending')
                                         <span class="badge bg-warning text-dark px-3 py-2">Menunggu</span>
+                                    @break
                                 @endswitch
                             </td>
-                            <td>{{ $permission->approver->name ?? '-' }}</td>
+                            <td class="text-center">{{ $permission->approver->name ?? '-' }}</td>
                             <td class="text-center">
                                 <a href="{{ route('admin.permissions.show', $permission->id) }}"
                                     class="btn btn-sm btn-info me-1" title="Lihat Detail">
@@ -150,6 +153,7 @@
                                 <td colspan="7" class="text-center text-muted">🚫 Tidak ada data undangan.</td>
                             </tr>
                         @endforelse
+
                     </tbody>
                 </table>
             </div>
