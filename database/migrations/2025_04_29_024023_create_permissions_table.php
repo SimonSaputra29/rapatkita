@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('location'); // Tempat rapat
             $table->text('topic'); // Topik atau agenda rapat
             $table->text('participants'); // Daftar peserta rapat
-            $table->string('attachment')->nullable(); // Lampiran file tambahan
             $table->text('note')->nullable(); // Catatan tambahan
             $table->enum('status', ['draft', 'pending', 'approved', 'rejected']);
             $table->foreignId('approved_by')->nullable()->constrained('users')->onDelete('set null'); // Siapa yang menyetujui (atasan)

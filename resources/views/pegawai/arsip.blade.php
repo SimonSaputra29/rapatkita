@@ -92,6 +92,7 @@
 </head>
 <body>
 
+    
     <div class="header">
         <img src="{{ asset('images/logo_kantor.png') }}" alt="Logo Kantor">
         <div class="title">UNDANGAN RAPAT</div>

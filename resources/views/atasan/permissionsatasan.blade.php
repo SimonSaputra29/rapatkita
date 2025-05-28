@@ -24,7 +24,13 @@
 
 @section('content')
     <div class="container mt-5">
+        <div class="d-flex justify-content-end mb-3 animate__animated animate__fadeInRight">
+            <a href="{{ route('atasan.create') }}" class="btn btn-primary shadow-sm">
+                <i class="bi bi-plus-circle me-1"></i> Ajukan Undangan Baru
+            </a>
+        </div>
         <div class="card border-0 shadow-lg animate__animated animate__fadeIn">
+
             <div
                 class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center animate__animated animate__slideInDown">
                 <h5 class="mb-0">
@@ -67,7 +73,7 @@
                         </thead>
                         <tbody>
                             @forelse($permissions as $permission)
-                                @continue($permission->status === 'draft') {{-- Lewati jika status draft --}}
+                                {{-- @continue($permission->status === 'draft') Lewati jika status draft --}}
                                 <tr class="animate__animated animate__fadeInUp animate__faster">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $permission->user->name }}</td>
@@ -88,6 +94,12 @@
                                             @case('rejected')
                                                 <span class="badge bg-danger">
                                                     <i class="bi bi-x-circle me-1"></i>Ditolak
+                                                </span>
+                                            @break
+
+                                            @case('draft')
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-x-circle me-1"></i>arsip
                                                 </span>
                                             @break
 

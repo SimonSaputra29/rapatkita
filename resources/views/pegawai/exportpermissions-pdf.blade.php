@@ -102,30 +102,36 @@
 </head>
 
 <body>
-    {{-- <div class="kop-surat" style="text-align: center; margin-bottom: 20px;">
-        <table style="width: 100%; border-bottom: 2px solid black; padding-bottom: 10px;">
-            <tr>
-                <td style="width: 80px;">
-                    <img src="{{ asset('images/logo_kantor.jpeg') }}" alt="Logo Kantor" style="height: 80px;">
-                </td>
-                <td style="text-align: center;">
-                    <div style="font-size: 16px; font-weight: bold; text-transform: uppercase;">
-                        {{ $company['name'] ?? 'Nama Instansi/Lembaga' }}
-                    </div>
-                    <div style="font-size: 14px;">
-                        {{ $company['address'] ?? 'Alamat Jalan, Kota, Kode Pos' }}
-                    </div>
-                    <div style="font-size: 13px;">
-                        Telp: {{ $company['phone'] ?? '-' }} | Email: {{ $company['email'] ?? '-' }} | Website:
-                        {{ $company['website'] ?? '-' }}
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div> --}}
+    <div class="kop-surat" style="text-align: center; margin-bottom: 20px;">
+    <table style="width: 100%; border-bottom: 2px solid black; padding-bottom: 10px;">
+        <tr>
+            <td style="width: 100px; text-align: left;">
+                @if ($base64Logo)
+                    <img src="{{ $base64Logo }}" alt="Logo Kantor" style="height: 80px;">
+                @else
+                    <div style="width: 80px; height: 80px; background-color: #eee;"></div>
+                @endif
+            </td>
+            <td style="text-align: center;">
+                <div style="font-size: 18px; font-weight: bold; text-transform: uppercase;">
+                    {{ $company['name'] ?? 'SMK Wikrama 1 Garut' }}
+                </div>
+                <div style="font-size: 14px; margin-top: 4px;">
+                    {{ $company['address'] ?? 'Jalan Otista Kp. Tanjung RT.003 RW.013 Ds. Pasawahan Kec. Tarogong Kaler Kabupaten Garut (0262)' }}
+                </div>
+                <div style="font-size: 13px; margin-top: 4px;">
+                    Telp: {{ $company['phone'] ?? '2802880' }} |
+                    Email: {{ $company['email'] ?? 'smkwikrama1garut.sch.id' }} |
+                    Website: {{ $company['website'] ?? 'https://smkwikrama1garut.sch.id' }}
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
 
 
-    <div class="header">
+
+    {{-- <div class="header">
         <!-- Logo kantor, sesuaikan path gambar -->
         <img src="{{ asset('images/logo_kantor.png') }}" alt="Logo Kantor">
         <div class="title">UNDANGAN RAPAT</div>
@@ -140,16 +146,16 @@
                 <span class="status pending">Menunggu Persetujuan</span>
             @endif
         </div>
-    </div>
+    </div> --}}
 
     <div class="content">
-         <div class="number">
-            Nomor   :
+        <div class="number">
+            Nomor :
             {{ $permission->id ?? '-' }}/RAPAT/{{ \Carbon\Carbon::parse($permission->created_at ?? now())->format('m/Y') }}
         </div>
-        <div class="div">Lampiran    : -</div>
+        <div class="div">Lampiran : -</div>
         <div class="div">Hal : Undangan Rapat</div>
-            
+
 
 
         <p>Kepada Yth:</p>
