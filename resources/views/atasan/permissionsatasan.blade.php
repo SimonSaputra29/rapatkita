@@ -68,6 +68,7 @@
                                 <th>Partisipasi</th>
                                 <th>Catatan</th>
                                 <th>Status</th>
+                                <th>Detail</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -108,6 +109,12 @@
                                                     <i class="bi bi-hourglass-split me-1"></i>Menunggu
                                                 </span>
                                         @endswitch
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ route('atasan.profil.show', $permission->creator_id) }}"
+                                            class="btn btn-sm btn-info me-1" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
                                     </td>
                                     <td>
                                         @if ($permission->status == 'pending')

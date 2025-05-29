@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('no_wa')->nullable();
-            $table->string('gaji')->nullable();
+            $table->float('gaji', 15, 2)->nullable();
             $table->date('tanggal_bergabung')->nullable();
             $table->enum('gender', ['L', 'P', 'Spesial']);
             $table->string('umur')->nullable();

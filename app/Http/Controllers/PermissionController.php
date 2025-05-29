@@ -6,11 +6,13 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PermissionController extends Controller
 {
+    //PEGAWAI
     public function index()
     {
         $permissions = Permission::with('user', 'approver')
@@ -57,6 +59,57 @@ class PermissionController extends Controller
         return redirect()->route('pegawai.permissions.index')->with('success', $message);
     }
 
+    public function exportPdf(Permission $permission)
+    {
+        // Pastikan relasi 'user' dan 'approver' dimuat
+        $permission->load(['user', 'approver']);
+
+        // Convert logo menjadi base64 agar bisa dibaca DomPDF
+        $path = public_path('images/logo_kantor.jpeg');
+
+        if (file_exists($path)) {
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64Logo = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        } else {
+            $base64Logo = null; // atau bisa pakai gambar default
+        }
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pegawai.exportpermissions-pdf', compact('permission', 'base64Logo'));
+
+        return $pdf->download('undangan_rapat_' . $permission->id . '.pdf');
+    }
+
+    public function download(Permission $permission)
+    {
+        if ($permission->status !== 'draft') {
+            return redirect()->back()->with('error', 'Hanya undangan berstatus arsip yang bisa diunduh.');
+        }
+
+        $pdf = Pdf::loadView('pegawai.arsip', compact('permission'));
+
+        return $pdf->download('undangan-rapat-' . $permission->id . '.pdf');
+    }
+
+
+    //ATASAN
+
+    public function indexAtasan()
+    {
+        $permissions = Permission::with('user', 'approver')
+            ->latest()
+            ->paginate(10);
+
+        return view('atasan.permissionsatasan', compact('permissions'));
+    }
+
+    public function showAtasan($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('atasan.profilpegawai', compact('user'));
+    }
     public function storeatasan(Request $request)
     {
         $validated = $request->validate([
@@ -108,27 +161,7 @@ class PermissionController extends Controller
         return redirect()->back()->with('error', 'Izin ditolak.');
     }
 
-    public function exportPdf(Permission $permission)
-    {
-        // Pastikan relasi 'user' dan 'approver' dimuat
-        $permission->load(['user', 'approver']);
-
-        // Convert logo menjadi base64 agar bisa dibaca DomPDF
-        $path = public_path('images/logo_kantor.jpeg');
-
-        if (file_exists($path)) {
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            $base64Logo = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        } else {
-            $base64Logo = null; // atau bisa pakai gambar default
-        }
-
-        // Generate PDF
-        $pdf = Pdf::loadView('pegawai.exportpermissions-pdf', compact('permission', 'base64Logo'));
-
-        return $pdf->download('undangan_rapat_' . $permission->id . '.pdf');
-    }
+    //ADMIN
     public function exportPdfAdmin(Permission $permission)
     {
         // Pastikan relasi 'user' dan 'approver' dimuat
@@ -138,27 +171,6 @@ class PermissionController extends Controller
         $pdf = Pdf::loadView('admin.exportpermissions-pdf', compact('permission'));
 
         return $pdf->download('undangan_rapat_' . $permission->id . '.pdf');
-    }
-
-    public function download(Permission $permission)
-    {
-        if ($permission->status !== 'draft') {
-            return redirect()->back()->with('error', 'Hanya undangan berstatus arsip yang bisa diunduh.');
-        }
-
-        $pdf = Pdf::loadView('pegawai.arsip', compact('permission'));
-
-        return $pdf->download('undangan-rapat-' . $permission->id . '.pdf');
-    }
-
-    // Menampilkan daftar izin untuk atasan
-    public function indexAtasan()
-    {
-        $permissions = Permission::with('user', 'approver')
-            ->latest()
-            ->paginate(10);
-
-        return view('atasan.permissionsatasan', compact('permissions'));
     }
 
     public function indexAdmin(Request $request)

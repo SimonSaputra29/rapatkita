@@ -58,6 +58,7 @@ Route::middleware('auth', 'role:atasan')->group(function () {
     Route::resource('/atasan', AtasanController::class);
     Route::get('/permissionsatasan', [PermissionController::class, 'indexAtasan'])->name('atasan.permissions.index');
     Route::post('/atasanpermissionsstore', [PermissionController::class, 'storeatasan'])->name('atasan.permissions.store');
+    Route::get('/profil/{id}', [PermissionController::class, 'showAtasan'])->name('atasan.profil.show');
     Route::patch('/permissions/{permission}/approve', [PermissionController::class, 'approve'])->name('atasan.permissions.approve');
     Route::patch('/permissions/{permission}/reject', [PermissionController::class, 'reject'])->name('atasan.permissions.reject');
 });
