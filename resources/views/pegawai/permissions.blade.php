@@ -47,7 +47,19 @@
                             <td>{{ $permission->time }}</td>
                             <td>{{ $permission->location }}</td>
                             <td>{{ $permission->topic }}</td>
-                            <td>{{ $permission->participants }}</td>
+                            <td>
+                                @php
+                                    $participants = json_decode($permission->participants, true);
+                                @endphp
+                                @if (is_array($participants))
+                                    @foreach ($participants as $item)
+                                        <span class="badge bg-primary me-1">{{ $item['value'] }}</span>
+                                    @endforeach
+                                @else
+                                    <span class="badge bg-primary me-1">{{ $permission->participants }}</span>
+                                @endif
+                            </td>
+
                             <td>{{ $permission->note }}</td>
                             <td>
                                 @if ($permission->status === 'approved')

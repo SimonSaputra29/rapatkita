@@ -67,12 +67,14 @@
 
                     <div class="mb-3 animate__animated animate__fadeInLeft animate__delay-2s">
                         <label for="participants" class="form-label">👥 Peserta Rapat</label>
-                        <textarea name="participants" id="participants" class="form-control @error('participants') is-invalid @enderror"
-                            rows="3" placeholder="Contoh: Seluruh Guru, Siswa, dll" required>{{ old('participants') }}</textarea>
+                        <input name="participants" id="participants"
+                            class="form-control @error('participants') is-invalid @enderror"
+                            placeholder="Ketik atau pilih peserta..." value="{{ old('participants') }}">
                         @error('participants')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
 
                     <div class="mb-3 animate__animated animate__fadeInLeft animate__delay-2s">
                         <label for="note" class="form-label">🗒️ Catatan (opsional)</label>
@@ -104,3 +106,17 @@
         </div>
     </div>
 @endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.querySelector('#participants');
+        const tagify = new Tagify(input, {
+            whitelist: @json($userList),
+            dropdown: {
+                maxItems: 10,
+                enabled: 0,
+                classname: "participants-suggestions",
+                closeOnSelect: false
+            }
+        });
+    });
+</script>
