@@ -90,6 +90,7 @@
         <button type="submit" class="btn btn-primary px-4 py-2 fw-semibold">
             <i class="bi bi-plus-circle me-2"></i> Buat User
         </button>
+        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary ms-2 px-4 py-2">Batal</a>
     </form>
 </div>
 @endsection

@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Undangan Rapat</title>
@@ -15,7 +17,7 @@
         .header {
             text-align: center;
             margin-bottom: 30px;
-            border-bottom: 2px solid #080808FF;
+            border-bottom: 2px solid #444;
             padding-bottom: 10px;
         }
 
@@ -34,7 +36,7 @@
 
         .number {
             font-size: 14px;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .status {
@@ -44,21 +46,9 @@
             display: inline-block;
             font-size: 14px;
             margin-top: 5px;
+            background: #6c757d;
             color: white;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        }
-
-        .approved {
-            background: linear-gradient(45deg, #28a745, #218838);
-        }
-
-        .rejected {
-            background: linear-gradient(45deg, #dc3545, #c82333);
-        }
-
-        .pending {
-            background: linear-gradient(45deg, #ffc107, #e0a800);
-            color: #212529;
         }
 
         .content {
@@ -100,72 +90,28 @@
         }
     </style>
 </head>
-
 <body>
-    <div class="kop-surat" style="text-align: center; margin-bottom: 20px;">
-    <table style="width: 100%; border-bottom: 2px solid black; padding-bottom: 10px;">
-        <tr>
-            <td style="width: 100px; text-align: left;">
-                @if ($base64Logo)
-                    <img src="{{ $base64Logo }}" alt="Logo Kantor" style="height: 80px;">
-                @else
-                    <div style="width: 80px; height: 80px; background-color: #eee;"></div>
-                @endif
-            </td>
-            <td style="text-align: center;">
-                <div style="font-size: 18px; font-weight: bold; text-transform: uppercase;">
-                    {{ $company['name'] ?? 'SMK Wikrama 1 Garut' }}
-                </div>
-                <div style="font-size: 14px; margin-top: 4px;">
-                    {{ $company['address'] ?? 'Jalan Otista Kp. Tanjung RT.003 RW.013 Ds. Pasawahan Kec. Tarogong Kaler Kabupaten Garut (0262)' }}
-                </div>
-                <div style="font-size: 13px; margin-top: 4px;">
-                    Telp: {{ $company['phone'] ?? '2802880' }} |
-                    Email: {{ $company['email'] ?? 'smkwikrama1garut.sch.id' }} |
-                    Website: {{ $company['website'] ?? 'https://smkwikrama1garut.sch.id' }}
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
 
-
-
-    {{-- <div class="header">
-        <!-- Logo kantor, sesuaikan path gambar -->
+    
+    <div class="header">
         <img src="{{ asset('images/logo_kantor.png') }}" alt="Logo Kantor">
         <div class="title">UNDANGAN RAPAT</div>
-        
-
-        <div>
-            @if ($permission->status == 'approved')
-                <span class="status approved">Disetujui</span>
-            @elseif($permission->status == 'rejected')
-                <span class="status rejected">Ditolak</span>
-            @else
-                <span class="status pending">Menunggu Persetujuan</span>
-            @endif
+        <div class="number">
+            Nomor: {{ $permission->id ?? '-' }}/RAPAT/{{ \Carbon\Carbon::parse($permission->created_at ?? now())->format('m/Y') }}
         </div>
-    </div> --}}
+        {{-- <div>
+            <span class="status">Draf / Arsip</span>
+        </div> --}}
+    </div>
 
     <div class="content">
-        <div class="number">
-            Nomor :
-            {{ $permission->id ?? '-' }}/RAPAT/{{ \Carbon\Carbon::parse($permission->created_at ?? now())->format('m/Y') }}
-        </div>
-        <div class="div">Lampiran : -</div>
-        <div class="div">Hal : Undangan Rapat</div>
-
-
-
         <p>Kepada Yth:</p>
         <p><strong>{{ $permission->approver->name ?? '-' }}</strong><br>
             Email: {{ $permission->approver->email ?? '-' }}<br>
             Di Tempat</p>
 
         <p>Dengan hormat,</p>
-        <p>Sehubungan dengan kegiatan koordinasi internal, kami mengundang Saudara/i untuk menghadiri rapat yang akan
-            dilaksanakan pada:</p>
+        <p>Berikut adalah rancangan undangan rapat yang disimpan sebagai arsip atau draft. Undangan ini belum disetujui secara resmi.</p>
 
         <table>
             <tr>
@@ -194,12 +140,13 @@
             <p>Catatan:<br>{{ $permission->note }}</p>
         @endif
 
-        <p>Demikian undangan ini kami sampaikan. Atas perhatian dan kehadirannya, kami ucapkan terima kasih.</p>
+        <p>Harap tinjau kembali data undangan ini sebelum menyetujui dan mengirimkan kepada peserta.</p>
     </div>
 
     <div class="footer">
-        <p>Hormat kami,</p>
-        <p><strong>{{ $permission->approver->name ?? 'Panitia Rapat' }}</strong></p>
+        <p>Disusun oleh:</p>
+        <p><strong>{{ $permission->user->name ?? 'Panitia Rapat' }}</strong></p>
     </div>
 
 </body>
+</html>

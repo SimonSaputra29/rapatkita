@@ -37,8 +37,6 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('/permissions/{id}', [PermissionController::class, 'showAdmin'])->name('admin.permissions.show');
     Route::delete('/permissions/{id}', [PermissionController::class, 'destroyAdmin'])->name('admin.permissions.destroy');
     Route::get('/permissions/{permission}/export', [PermissionController::class, 'exportPdfAdmin'])->name('admin.permissions.export');
-    // Route::resource('meetings', MeetingController::class);
-    // Route::get('meetings/{meeting}/pdf', [MeetingController::class, 'downloadPdf'])->name('meetings.pdf');
     Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', UserController::class);
 });
@@ -51,12 +49,16 @@ Route::middleware('auth', 'role:pegawai')->group(function () {
     Route::get('/permissionpegawai', [PermissionController::class, 'index'])->name('pegawai.permissions.index');
     Route::post('/pegawaipermissionsstore', [PermissionController::class, 'store'])->name('pegawai.permissions.store');
     Route::get('/exportpermissions-pdf/{permission}', [PermissionController::class, 'exportPdf'])->name('permissions.export');
+    Route::get('pegawai/permissions/{permission}/download', [PermissionController::class, 'download'])->name('pegawai.permissions.download');
+
 });
 
 // Atasan
 Route::middleware('auth', 'role:atasan')->group(function () {
     Route::resource('/atasan', AtasanController::class);
     Route::get('/permissionsatasan', [PermissionController::class, 'indexAtasan'])->name('atasan.permissions.index');
+    Route::post('/atasanpermissionsstore', [PermissionController::class, 'storeatasan'])->name('atasan.permissions.store');
+    Route::get('/profil/{id}', [PermissionController::class, 'showAtasan'])->name('atasan.profil.show');
     Route::patch('/permissions/{permission}/approve', [PermissionController::class, 'approve'])->name('atasan.permissions.approve');
     Route::patch('/permissions/{permission}/reject', [PermissionController::class, 'reject'])->name('atasan.permissions.reject');
 });

@@ -17,7 +17,7 @@
             </div>
 
             <div class="card-body">
-                <form action="{{ route('pegawai.permissions.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('atasan.permissions.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row mb-3 animate__animated animate__fadeInLeft animate__delay-1s">
@@ -67,14 +67,12 @@
 
                     <div class="mb-3 animate__animated animate__fadeInLeft animate__delay-2s">
                         <label for="participants" class="form-label">👥 Peserta Rapat</label>
-                        <input name="participants" id="participants"
-                            class="form-control @error('participants') is-invalid @enderror"
-                            placeholder="Ketik atau pilih peserta..." value="{{ old('participants') }}">
+                        <textarea name="participants" id="participants" class="form-control @error('participants') is-invalid @enderror"
+                            rows="3" placeholder="Contoh: Seluruh Guru, Siswa, dll" required>{{ old('participants') }}</textarea>
                         @error('participants')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
 
                     <div class="mb-3 animate__animated animate__fadeInLeft animate__delay-2s">
                         <label for="note" class="form-label">🗒️ Catatan (opsional)</label>
@@ -86,7 +84,7 @@
                     </div>
 
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-4">
-                        <a href="{{ route('pegawai.permissions.index') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('atasan.permissions.index') }}" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left-circle me-1"></i> Kembali
                         </a>
 
@@ -106,17 +104,3 @@
         </div>
     </div>
 @endsection
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const input = document.querySelector('#participants');
-        const tagify = new Tagify(input, {
-            whitelist: @json($userList),
-            dropdown: {
-                maxItems: 10,
-                enabled: 0,
-                classname: "participants-suggestions",
-                closeOnSelect: false
-            }
-        });
-    });
-</script>
