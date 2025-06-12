@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -111,6 +112,7 @@ class PermissionController extends Controller
 
         return view('atasan.profilpegawai', compact('user'));
     }
+
     public function storeatasan(Request $request)
     {
         $validated = $request->validate([
@@ -137,21 +139,31 @@ class PermissionController extends Controller
 
         // Kirim WhatsApp jika diajukan
         if ($status === 'pending') {
-            $message = "*Undangan Rapat Baru:*\n" .
-                "📅 Tanggal: " . $validated['date'] . "\n" .
-                "🕒 Waktu: " . $validated['time'] . "\n" .
-                "📍 Lokasi: " . $validated['location'] . "\n" .
-                "📝 Topik: " . $validated['topic'] . "\n" .
-                "👥 Peserta: " . $validated['participants'] . "\n" .
-                ($validated['note'] ? "🗒 Catatan: " . $validated['note'] . "\n" : "") .
-                "\nSilakan hadir sesuai jadwal.";
+            $hariTanggal = Carbon::parse($validated['date'])->translatedFormat('l, d F Y');
+
+            // Ubah peserta jadi teks biasa jika dalam bentuk JSON
+            $participants = is_string($validated['participants']) && str_starts_with($validated['participants'], '[')
+                ? collect(json_decode($validated['participants'], true))->pluck('value')->implode(', ')
+                : $validated['participants'];
+
+            // Buat isi pesan WhatsApp
+            $message = "Assalamualaikum, Bapak/Ibu.\n" .
+                "Dengan hormat, kami mengundang Bapak/Ibu untuk menghadiri rapat yang akan membahas *" . $validated['topic'] . "*.\n" .
+                "Rapat ini penting untuk membahas *" . ($validated['topic'] ?? '-') . "*.\n\n" .
+                "🗓 *Hari/Tanggal:* " . $hariTanggal . "\n" .
+                "🕒 *Waktu:* " . $validated['time'] . "\n" .
+                "📍 *Tempat:* " . $validated['location'] . "\n" .
+                "📝 *Agenda:* " . $validated['topic'] . "\n" .
+                "👥 *Peserta:* " . $participants . "\n\n" .
+                "Silakan hadir sesuai jadwal yang telah ditentukan. Terima kasih.";
+
 
             Http::withHeaders([
                 'Authorization' => 'fqFx6FiMuW7fCSGJHL6X',
             ])->post('https://api.fonnte.com/send', [
-                'target' => '08388017459', // Ganti dengan nomor tujuan sebenarnya
+                'target' => '081326634155', // Ganti dengan nomor tujuan sebenarnya
                 'message' => $message,
-                'countryCode' => '62', // Pastikan Fonnte diatur untuk gunakan ini jika perlu
+                'countryCode' => '62',
             ]);
         }
 
@@ -159,6 +171,7 @@ class PermissionController extends Controller
 
         return redirect()->route('atasan.permissions.index')->with('success', $message);
     }
+
 
 
 
@@ -241,8 +254,6 @@ class PermissionController extends Controller
     public function destroyAdmin($id)
     {
         $permission = Permission::findOrFail($id);
-
-        // Opsional: kamu bisa cek hak akses admin di sini jika perlu
 
         $permission->delete();
 

@@ -21,18 +21,18 @@ class AtasanController extends Controller
         return view('atasan.createpermissions', compact('userList'));
     }
 
-    public function sendwa()
-    {
-        $response = Http::withheaders(
-        [
-            'Authorization' => 'fqFx6FiMuW7fCSGJHL6X',
-        ]
-        )->post('https://api.fonnte.com/send',
-        [
-            'target' => '08388017459',
-            'message' => 'lu keren bet',
-        ]);
+    // public function sendwa()
+    // {
+    //     $response = Http::withheaders(
+    //     [
+    //         'Authorization' => 'fqFx6FiMuW7fCSGJHL6X',
+    //     ]
+    //     )->post('https://api.fonnte.com/send',
+    //     [
+    //         'target' => '08388017459',
+    //         'message' => 'lu keren bet',
+    //     ]);
 
         // dd(json_decode($response, true));
-    }
+    // }
 }

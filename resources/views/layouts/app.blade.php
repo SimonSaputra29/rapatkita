@@ -111,11 +111,47 @@
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 
 
-    {{-- SweetAlert2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    let wasOnline = navigator.onLine; // Cek status awal
+
+    function showConnectionAlert(message, icon) {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: icon,
+            title: message,
+            showConfirmButton: false,
+            timer: 10000,
+            timerProgressBar: true,
+        });
+    }
+
+    function checkConnectionStatus() {
+        const isOnline = navigator.onLine;
+
+        if (isOnline !== wasOnline) {
+            if (isOnline) {
+                showConnectionAlert('✅ Koneksi internet tersambung kembali!', 'success');
+            } else {
+                showConnectionAlert('⚠️ Koneksi internet terputus!', 'warning');
+            }
+            wasOnline = isOnline; // Update status terakhir agar tidak spam
+        }
+    }
+
+    // Jalankan saat status berubah
+    window.addEventListener('online', checkConnectionStatus);
+    window.addEventListener('offline', checkConnectionStatus);
+
+    if (!navigator.onLine) {
+        showConnectionAlert('⚠️ Koneksi internet tidak tersedia!', 'warning');
+    }
+</script>
 
     {{-- script expor --}}
     @yield('scripts')
+
 
 </body>
 

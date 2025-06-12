@@ -158,10 +158,23 @@
 
 
 
-        <p>Kepada Yth:</p>
-        <p><strong>{{ $permission->approver->name ?? '-' }}</strong><br>
-            Email: {{ $permission->approver->email ?? '-' }}<br>
-            Di Tempat</p>
+        <p><strong>Kepada Yth:</strong></p>
+<ol>
+    @php
+        $participants = json_decode($permission->participants, true);
+    @endphp
+
+    @if (is_array($participants))
+        @foreach ($participants as $index => $participant)
+            <li>{{ $participant['value'] }}</li>
+        @endforeach
+    @else
+        <li>{{ $permission->participants ?? '-' }}</li>
+    @endif
+</ol>
+
+            {{-- Email: {{ $permission->approver->email ?? '-' }}<br> --}}
+            {{-- <p>Di Tempat</p> --}}
 
         <p>Dengan hormat,</p>
         <p>Sehubungan dengan kegiatan koordinasi internal, kami mengundang Saudara/i untuk menghadiri rapat yang akan
@@ -184,22 +197,6 @@
                 <td>Topik</td>
                 <td>: {{ $permission->topic ?? '-' }}</td>
             </tr>
-            <tr>
-                <td>Partisipasi</td>
-                <td>:
-                    @php
-                        $participants = json_decode($permission->participants, true);
-                    @endphp
-
-                    @if (is_array($participants))
-                        {{ implode(', ', array_column($participants, 'value')) }}
-                    @else
-                        {{ $permission->participants ?? '-' }}
-                    @endif
-                </td>
-            </tr>
-
-
         </table>
 
         @if (!empty($permission->note))
@@ -211,6 +208,7 @@
 
     <div class="footer">
         <p>Hormat kami,</p>
+        <div style="height: 10px;"></div>
         <p><strong>{{ $permission->approver->name ?? 'Panitia Rapat' }}</strong></p>
     </div>
 
