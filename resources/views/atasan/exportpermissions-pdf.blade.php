@@ -198,6 +198,8 @@
                     @endif
                 </td>
             </tr>
+
+
         </table>
 
         @if (!empty($permission->note))

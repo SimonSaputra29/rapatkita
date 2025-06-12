@@ -85,7 +85,7 @@
                                 {{-- d-flex justify-content-center gap-1 flex-wrap --}}
                                 {{-- Tombol Unduh Surat --}}
                                 @if ($permission->status === 'approved')
-                                    <a href="{{ route('permissions.export', $permission->id) }}"
+                                    <a href="{{ route('pegawai.permissions.export', $permission->id) }}"
                                         class="btn btn-sm btn-success" data-bs-toggle="tooltip"
                                         title="Unduh Surat: {{ $permission->topic }}">
                                         <i class="bi bi-download"></i>

@@ -13,7 +13,16 @@
                     <div class="col-md-4 text-center mb-4 mb-md-0">
                         <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center"
                             style="width: 150px; height: 150px;">
-                            <i class="fas fa-user fa-4x text-muted"></i>
+
+                            @if ($user->role === 'pegawai')
+                                <i class="fas fa-user fa-4x text-primary" title="Pegawai"></i>
+                            @elseif ($user->role === 'atasan')
+                                <i class="fas fa-user-tie fa-4x text-success" title="Atasan"></i>
+                            @elseif ($user->role === 'admin')
+                                <i class="fas fa-user-shield fa-4x text-danger" title="Admin"></i>
+                            @else
+                                <i class="fas fa-question-circle fa-4x text-secondary" title="Tidak diketahui"></i>
+                            @endif
                         </div>
                         <h5 class="mt-3 mb-0">{{ $user->name }}</h5>
                         <span class="badge badge-primary mt-2 px-3 py-1">{{ ucfirst($user->role) }}</span>

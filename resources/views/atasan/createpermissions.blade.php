@@ -104,3 +104,17 @@
         </div>
     </div>
 @endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.querySelector('#participants');
+        const tagify = new Tagify(input, {
+            whitelist: @json($userList),
+            dropdown: {
+                maxItems: 10,
+                enabled: 0,
+                classname: "participants-suggestions",
+                closeOnSelect: false
+            }
+        });
+    });
+</script>

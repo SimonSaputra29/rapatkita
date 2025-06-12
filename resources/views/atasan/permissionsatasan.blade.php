@@ -68,7 +68,7 @@
                                 <th>Partisipasi</th>
                                 <th>Catatan</th>
                                 <th>Status</th>
-                                <th>Detail</th>
+                                <th>Setujui/Tolak</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -77,12 +77,28 @@
                                 {{-- @continue($permission->status === 'draft') Lewati jika status draft --}}
                                 <tr class="animate__animated animate__fadeInUp animate__faster">
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $permission->user->name }}</td>
+                                    <td>
+                                        <a href="{{ route('atasan.profil.show', $permission->creator_id) }}"
+                                            class="text-decoration-none fw-semibold text-primary">
+                                            {{ $permission->user->name }}
+                                        </a>
+                                    </td>
                                     <td>{{ \Carbon\Carbon::parse($permission->date)->translatedFormat('d F Y') }}</td>
                                     <td>{{ $permission->time }}</td>
                                     <td>{{ $permission->location }}</td>
                                     <td>{{ $permission->topic }}</td>
-                                    <td>{{ $permission->participants }}</td>
+                                    <td>
+                                        @php
+                                            $participants = json_decode($permission->participants, true);
+                                        @endphp
+                                        @if (is_array($participants))
+                                            @foreach ($participants as $item)
+                                                <span class="badge bg-secondary me-1">{{ $item['value'] }}</span>
+                                            @endforeach
+                                        @else
+                                            <span class="badge bg-secondary me-1">{{ $permission->participants }}</span>
+                                        @endif
+                                    </td>
                                     <td>{{ $permission->note }}</td>
                                     <td>
                                         @switch($permission->status)
@@ -110,12 +126,6 @@
                                                 </span>
                                         @endswitch
                                     </td>
-                                    <td class="text-center">
-                                        <a href="{{ route('atasan.profil.show', $permission->creator_id) }}"
-                                            class="btn btn-sm btn-info me-1" title="Lihat Detail">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </td>
                                     <td>
                                         @if ($permission->status == 'pending')
                                             <div class="d-flex justify-content-center gap-1">
@@ -142,6 +152,31 @@
                                         @else
                                             <span class="text-muted">-</span>
                                         @endif
+                                    </td>
+                                    <td class="">
+                                        {{-- d-flex justify-content-center gap-1 flex-wrap --}}
+                                        {{-- Tombol Unduh Surat --}}
+                                        @if ($permission->status === 'approved')
+                                            <a href="{{ route('atasan.permissions.export', $permission->id) }}"
+                                                class="btn btn-sm btn-success" data-bs-toggle="tooltip"
+                                                title="Unduh Surat: {{ $permission->topic }}">
+                                                <i class="bi bi-download"></i>
+                                            </a>
+                                            {{-- Tombol Unduh Arsip Draft (jika status draft) --}}
+                                        @elseif ($permission->status === 'draft')
+                                            <a href="{{ route('pegawai.permissions.download', $permission) }}"
+                                                class="btn btn-sm btn-secondary" data-bs-toggle="tooltip"
+                                                title="Unduh Arsip Draft: {{ $permission->topic }}">
+                                                <i class="bi bi-file-earmark-arrow-down"></i>
+                                            </a>
+                                        @elseif ($permission->status === 'pending' || $permission->status === 'rejected')
+                                            <button class="btn btn-sm btn-outline-secondary" disabled
+                                                data-bs-toggle="tooltip"
+                                                title="Surat belum dapat diunduh karena status masih '{{ $permission->status }}'">
+                                                <i class="bi bi-download"></i>
+                                            </button>
+                                        @endif
+
                                     </td>
                                 </tr>
                                 @empty

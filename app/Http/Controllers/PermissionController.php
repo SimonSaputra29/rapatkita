@@ -8,6 +8,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class PermissionController extends Controller
@@ -134,10 +135,31 @@ class PermissionController extends Controller
             'status' => $status,
         ]);
 
-        $message = $status === 'draft' ? 'Undangan disimpan sebagai arsip.' : 'Undangan berhasil diajukan.';
+        // Kirim WhatsApp jika diajukan
+        if ($status === 'pending') {
+            $message = "*Undangan Rapat Baru:*\n" .
+                "📅 Tanggal: " . $validated['date'] . "\n" .
+                "🕒 Waktu: " . $validated['time'] . "\n" .
+                "📍 Lokasi: " . $validated['location'] . "\n" .
+                "📝 Topik: " . $validated['topic'] . "\n" .
+                "👥 Peserta: " . $validated['participants'] . "\n" .
+                ($validated['note'] ? "🗒 Catatan: " . $validated['note'] . "\n" : "") .
+                "\nSilakan hadir sesuai jadwal.";
+
+            Http::withHeaders([
+                'Authorization' => 'fqFx6FiMuW7fCSGJHL6X',
+            ])->post('https://api.fonnte.com/send', [
+                'target' => '08388017459', // Ganti dengan nomor tujuan sebenarnya
+                'message' => $message,
+                'countryCode' => '62', // Pastikan Fonnte diatur untuk gunakan ini jika perlu
+            ]);
+        }
+
+        $message = $status === 'draft' ? 'Undangan disimpan sebagai arsip.' : 'Undangan berhasil diajukan. Notifikasi WA telah dikirim.';
 
         return redirect()->route('atasan.permissions.index')->with('success', $message);
     }
+
 
 
     public function approve(Permission $permission)
@@ -159,6 +181,28 @@ class PermissionController extends Controller
         ]);
 
         return redirect()->back()->with('error', 'Izin ditolak.');
+    }
+
+    public function exportPdfAtasan(Permission $permission)
+    {
+        // Pastikan relasi 'user' dan 'approver' dimuat
+        $permission->load(['user', 'approver']);
+
+        // Convert logo menjadi base64 agar bisa dibaca DomPDF
+        $path = public_path('images/logo_kantor.jpeg');
+
+        if (file_exists($path)) {
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64Logo = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        } else {
+            $base64Logo = null; // atau bisa pakai gambar default
+        }
+
+        // Generate PDF
+        $pdf = Pdf::loadView('atasan.exportpermissions-pdf', compact('permission', 'base64Logo'));
+
+        return $pdf->download('undangan_rapat_' . $permission->id . '.pdf');
     }
 
     //ADMIN

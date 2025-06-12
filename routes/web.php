@@ -26,6 +26,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -48,7 +50,7 @@ Route::middleware('auth', 'role:pegawai')->group(function () {
     Route::resource('/pegawai', PegawaiController::class);
     Route::get('/permissionpegawai', [PermissionController::class, 'index'])->name('pegawai.permissions.index');
     Route::post('/pegawaipermissionsstore', [PermissionController::class, 'store'])->name('pegawai.permissions.store');
-    Route::get('/exportpermissions-pdf/{permission}', [PermissionController::class, 'exportPdf'])->name('permissions.export');
+    Route::get('/exportpermissions-pdf1/{permission}', [PermissionController::class, 'exportPdf'])->name('pegawai.permissions.export');
     Route::get('pegawai/permissions/{permission}/download', [PermissionController::class, 'download'])->name('pegawai.permissions.download');
 
 });
@@ -56,9 +58,14 @@ Route::middleware('auth', 'role:pegawai')->group(function () {
 // Atasan
 Route::middleware('auth', 'role:atasan')->group(function () {
     Route::resource('/atasan', AtasanController::class);
+    Route::get('/sendwa', [AtasanController::class, 'sendwa']);
     Route::get('/permissionsatasan', [PermissionController::class, 'indexAtasan'])->name('atasan.permissions.index');
     Route::post('/atasanpermissionsstore', [PermissionController::class, 'storeatasan'])->name('atasan.permissions.store');
     Route::get('/profil/{id}', [PermissionController::class, 'showAtasan'])->name('atasan.profil.show');
     Route::patch('/permissions/{permission}/approve', [PermissionController::class, 'approve'])->name('atasan.permissions.approve');
     Route::patch('/permissions/{permission}/reject', [PermissionController::class, 'reject'])->name('atasan.permissions.reject');
+    Route::get('/exportpermissions-pdf2/{permission}', [PermissionController::class, 'exportPdfAtasan'])->name('atasan.permissions.export');
+
 });
+
+
